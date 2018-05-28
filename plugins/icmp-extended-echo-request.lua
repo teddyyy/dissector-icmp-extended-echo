@@ -12,7 +12,7 @@
 
 local icmp_ext_echo_req_proto = Proto("ICMP_Extended_Echo_Request", "ICMP Extended Echo Request")
 local f = icmp_ext_echo_req_proto.fields
-local icmpv6_type = Field.new("icmpv6.type")
+local icmpv6_type_f = Field.new("icmpv6.type")
 
 local local_mode = {[0] = "False", [1] = "True"}
 
@@ -25,17 +25,20 @@ f.reserved = ProtoField.new("Reserved", "icmp.ext.echo.req.rsrvd", ftypes.UINT8,
 f.local_flag = ProtoField.new("Local Mode", "icmp.ext.echo.req.local_flag", ftypes.UINT8, local_mode, base.HEX)
 
 function icmp_ext_echo_req_proto.dissector(buffer, pinfo, tree)
-	if icmpv6_type().value == 160 then
-		local subtree = tree:add(icmp_ext_echo_req_proto, buffer(54, 8))
+	if icmpv6_type_f() ~= nil then
+		local icmpv6_type = icmpv6_type_f().value
+		if icmpv6_type == 160 then
+			local subtree = tree:add(icmp_ext_echo_req_proto, buffer(54, 8))
 
-		subtree:add(f.type, buffer(54, 1))
-		subtree:add(f.code, buffer(55, 1))
-		subtree:add(f.checksum, buffer(56, 2))
-		subtree:add(f.identifier, buffer(58, 2))
-		subtree:add(f.sequence, buffer(60, 1))
+			subtree:add(f.type, buffer(54, 1))
+			subtree:add(f.code, buffer(55, 1))
+			subtree:add(f.checksum, buffer(56, 2))
+			subtree:add(f.identifier, buffer(58, 2))
+			subtree:add(f.sequence, buffer(60, 1))
 
-		local subflagtree = subtree:add(f.reserved, buffer(61, 1), buffer(61, 1):uint())
-		subflagtree:add(f.local_flag, buffer(61, 1))
+			local subflagtree = subtree:add(f.reserved, buffer(61, 1), buffer(61, 1):uint())
+			subflagtree:add(f.local_flag, buffer(61, 1))
+		end
 	end
 end
 
