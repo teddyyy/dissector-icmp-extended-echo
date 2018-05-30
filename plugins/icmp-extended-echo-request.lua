@@ -22,7 +22,7 @@ f.checksum = ProtoField.new("Checksum", "icmp.ext.echo.req.checksum", ftypes.UIN
 f.identifier = ProtoField.new("Identifier", "icmp.ext.echo.req.identifier", ftypes.UINT16, nil, base.HEX)
 f.sequence = ProtoField.new("Sequence Number", "icmp.ext.echo.req.seq", ftypes.UINT8, nil, base.DEC)
 f.reserved = ProtoField.new("Reserved", "icmp.ext.echo.req.rsrvd", ftypes.UINT8, nil, base.HEX)
-f.local_flag = ProtoField.new("Local Mode", "icmp.ext.echo.req.local_flag", ftypes.UINT8, local_mode, base.HEX)
+f.local_flag = ProtoField.new("Local Mode", "icmp.ext.echo.req.local_flag", ftypes.UINT8, local_mode, base.HEX, 0x01)
 
 function icmp_ext_echo_req_proto.dissector(buffer, pinfo, tree)
 	if icmpv6_type_f() ~= nil then
