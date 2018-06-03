@@ -83,7 +83,7 @@ function icmp_ext_echo_reply_proto.dissector(buffer, pinfo, tree)
     if icmpv6_type_f() then
         if icmpv6_type_f().value == 161 then
             icmp_ptr = 54 -- ethernet header + IPv6 header
-			display_icmp_ext_echo_reply_proto_subtree(buffer, pinfo, tree, icmp_ptr)
+            display_icmp_ext_echo_reply_proto_subtree(buffer, pinfo, tree, icmp_ptr)
 		end
 	end
 end
